@@ -14,7 +14,7 @@ namespace MailChimp.Net.Api
 
         ServiceResponse Subscribe(string email);
 
-        ServiceResponse Subscribe(string email, List<Grouping> groupings, Dictionary<string, string> field);
+        ServiceResponse Subscribe(string email, List<Grouping> groupings, Dictionary<string, string> field, bool updateExisting = true);
 
         ServiceResponse Unsubscribe(string email);
     }
