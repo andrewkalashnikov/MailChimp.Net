@@ -67,7 +67,7 @@ namespace MailChimp.Net.Api
         }
 
 
-        private ServiceResponse SubscribeWithMergeVars(string email, dynamic mergeVars)
+        private ServiceResponse SubscribeWithMergeVars(string email, dynamic mergeVars, bool updateExisting = true)
         {
             ServiceResponse serviceResponse = new ServiceResponse();
             var urlTemplate = String.Format("{0}{1}/subscribe.json/", MailChimpServiceConfiguration.Settings.ServiceUrl,
@@ -79,7 +79,7 @@ namespace MailChimp.Net.Api
             subscriber.ListId = MailChimpServiceConfiguration.Settings.SubscriberListId;
             var emailObject = new Email { EmailValue = email };
             subscriber.Email = emailObject;
-            subscriber.UpdateExisting = true;
+            subscriber.UpdateExisting = updateExisting;
 
             if (mergeVars != null)
             {
@@ -109,7 +109,7 @@ namespace MailChimp.Net.Api
             return serviceResponse;
         }
 
-        public ServiceResponse Subscribe(string email, List<Grouping> groupings, Dictionary<string, string> fields)
+        public ServiceResponse Subscribe(string email, List<Grouping> groupings, Dictionary<string, string> fields, bool updateExisting = true)
         {
             dynamic mergeVars = new Dictionary<string, Object>();
             mergeVars.Add("groupings", groupings);
@@ -120,7 +120,7 @@ namespace MailChimp.Net.Api
                 //http://stackoverflow.com/questions/4938397/dynamically-adding-properties-to-an-expandoobject
                 mergeVars.Add(nameValue.Key, nameValue.Value);
             }
-            var response = this.SubscribeWithMergeVars(String.Format(email), mergeVars);
+            var response = this.SubscribeWithMergeVars(String.Format(email), mergeVars, updateExisting);
 
             return response;
         }
